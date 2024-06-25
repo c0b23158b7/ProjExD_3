@@ -143,21 +143,17 @@ class Bomb:
 
 
 class Score:
-    """
-    Scoreクラス
-    """
-    def __init__(c):
-        while True:
-            font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
-            screen = pg.display.set_mode((800, 600))
-            txt = font.render("スコア : {c}", 0, (0, 0, 255))
-            screen.fill((0, 0, 0))
-            screen.blit(txt, [100, 850])
-            pg.display.update()
-    
-    def update(txt, screen: pg.Surface):
-        screen.blit()
-
+    def __init__(self):
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        self.s = 0
+        self.txt = self.font.render("スコア : {self.s}", 0, (0, 0, 255))
+        self.rct = self.txt.get_rect()
+        self.rct.center = 100, HEIGHT-50
+        
+    def update(self, screen):
+        self.txt = self.font.render(f"Score: {self.s}", 0, (0, 0, 255))
+        screen.blit(self.txt, self.rct) 
+        
 
 
 def main():
@@ -169,6 +165,8 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     beam = None
+    score = Score()
+    
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -196,9 +194,10 @@ def main():
         for i in range(len (bombs)) :
             if beam is not None:
                 if bombs[i].rct.colliderect(beam.rct):
-                    bombs[i] = None
+                    bomb[i] = None
                     beam = None
                     bird.change_img(6, screen)
+                    score.s += 1
                     
         bombs = [bomb for bomb in bombs if bomb is not None]
         
@@ -211,6 +210,8 @@ def main():
             
         for bomb in bombs:
             bomb.update(screen)
+        
+        score.update(screen)
         
         pg.display.update()
         tmr += 1
