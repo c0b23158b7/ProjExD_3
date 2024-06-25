@@ -11,6 +11,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 NUM_OF_BOMBS = 5  # 爆弾の個数
 
 
+
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内or画面外を判定し，真理値タプルを返す関数
@@ -190,13 +191,14 @@ def main():
                 time.sleep(1)
                 return
         
-        for i in range(len (bombs)) :
-            if beam is not None:
-                if bombs[i].rct.colliderect(beam.rct):
-                    bomb[i] = None
-                    beam = None
-                    bird.change_img(6, screen)
-                    score.s += 1
+        # 爆弾とビームの衝突を検出して処理する
+        for i, bomb in enumerate(bombs):
+            if beam is not None and bomb.rct.colliderect(beam.rct):
+                bombs.pop(i)  # 衝突した爆弾をリストから削除
+                beam = None  # ビームを消去
+                bird.change_img(6, screen)
+                score.s += 1
+
                     
         bombs = [bomb for bomb in bombs if bomb is not None]
         
