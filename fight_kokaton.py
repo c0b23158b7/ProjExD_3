@@ -146,11 +146,8 @@ class Score:
     """
     Scoreクラス
     """
-    def monitor(c):
+    def __init__(c):
         while True:
-            for event in pg.event.get():
-                if event.type == pg.QUIT: 
-                    return
             font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
             screen = pg.display.set_mode((800, 600))
             txt = font.render("スコア : {c}", 0, (0, 0, 255))
